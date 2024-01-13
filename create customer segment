@@ -1,0 +1,120 @@
+import pandas as pd
+import numpy as np
+import matplotlib.pyplot as plt
+import seaborn as sns
+
+df = pd.read_csv(r"C:\Users\Adimin\Downloads\archive\E-commerce Customer Behavior - Sheet1.csv")
+
+df.head()
+
+df.tail()
+
+df.info()
+
+df.describe()
+
+df.isnull().sum()
+
+df.dropna(inplace=True)
+
+df.drop_duplicates(inplace=True)
+
+df['Gender'].value_counts().reset_index()
+
+plt.figure(figsize=(8, 6))
+df['Gender'].value_counts().plot(kind='pie', autopct='%1.2f%%')
+plt.show()
+
+gender_spend = df.groupby('Gender')['Total Spend'].mean()
+gender_spend.plot.bar()
+plt.title("Average Spending for each Gender")
+plt.show()
+
+gender_spend = df.groupby('Gender')['Total Spend'].mean()
+gender_spend.plot.bar()
+plt.title("Average Spending for each Gender")
+plt.show()
+
+gender_membership = df[['Gender', 'Membership Type']].value_counts().reset_index(name='count')
+sns.barplot(data=gender_membership, x='Gender', y='count', hue='Membership Type')
+plt.title("Count of Gender and Membership Type")
+plt.show()
+
+age_data = df['Age'].value_counts().reset_index(name='count')
+plt.figure(figsize=(10, 6))
+sns.barplot(data=age_data, x='index', y='count')
+plt.title("Age Distribution")
+plt.show()
+
+gender_age_data = df[['Gender', 'Age']].value_counts().reset_index(name='count').sort_values(by='count', ascending=False)
+plt.figure(figsize=(16, 6))
+sns.barplot(data=gender_age_data, x='Age', y='count', hue='Gender')
+plt.title("Age Distribution")
+plt.show()
+
+plt.figure(figsize=(10, 6))
+df['City'].value_counts().plot(kind='pie', autopct='%1.1f%%')
+plt.title("City Distribution")
+plt.show()
+
+plt.figure(figsize=(8, 6))
+sns.barplot(data=df, x='City', y='Total Spend')
+plt.title("Average Spending by City")
+plt.show()
+
+sns.barplot(data=df, x='Membership Type', y='Total Spend')
+plt.show()
+
+age_grp=['21-30','31-43']
+df['age_group'] = pd.cut(df.Age,bins=np.arange(15,46,15),labels=age_grp,right=True)
+df.head()
+
+df['age_group'].value_counts().plot.pie(autopct='%.2f%%')
+plt.show()
+
+sns.barplot(data=df, x='age_group', y='Total Spend')
+plt.ylabel('Average Spending')
+plt.title('Average Spending by Age Group')
+plt.show()
+
+sns.barplot(data=df, x='age_group', y='Items Purchased')
+plt.title('Average NO. of Items Purchased by Age Group')
+plt.show()
+
+sns.barplot(data=df, x='age_group', y='Average Rating')
+plt.show()
+
+df['Discount Applied'].value_counts().plot(kind='pie', autopct='%.2f%%')
+plt.title("Frequency of Discounts Applied")
+plt.show()
+
+gender_discount = df.groupby('Gender')['Discount Applied'].value_counts()
+gender_discount.plot.bar()
+plt.show()
+
+age_group_discount = df.groupby('age_group')['Discount Applied'].value_counts()
+age_group_discount.plot.bar()
+
+plt.figure(figsize=(8, 6))
+sns.histplot(df['Days Since Last Purchase'])
+plt.title("Distribution of Days Since Last Purchase")
+plt.show()
+
+df['Satisfaction Level'].value_counts().plot.bar()
+plt.show()
+
+satisfaction_spend = df.groupby('Satisfaction Level')['Total Spend'].mean()
+satisfaction_spend.plot.bar()
+plt.ylabel('Average Spending')
+plt.show()
+
+satisfaction_rating = df.groupby('Satisfaction Level')['Average Rating'].mean()
+satisfaction_rating.plot.bar()
+plt.ylabel('Average Rating')
+plt.show()
+
+satisfaction_items = df.groupby('Satisfaction Level')['Items Purchased'].mean()
+satisfaction_items.plot.bar()
+plt.ylabel('Average NO. of Items Purchased')
+plt.show()
+
